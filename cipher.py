@@ -23,19 +23,34 @@ def VinegereCypher(inputString, key):
     cipher_text = []
     for i in range(len(inputString)):
         encryptedLetter = (ord(inputString[i]) + ord(key[i])) % 26
+        encryptedLetter += ord('A')
         cipher_text.append(chr(encryptedLetter))
     return ("".join(cipher_text))
 
+def decryption(cipher_text, key):
+    originalString = []
+    for letter in range(len(cipher_text)):
+        decryptedLetter = (ord(cipher_text[letter]) - ord(key[letter]) + 26) %26
+        decryptedLetter += ord('A')
+        originalString.append(chr(decryptedLetter))
+    newString = condenseString(originalString)
+    return newString
 
-
+#The index out of range is in this function. 
+#this function is not generating a random string of characters at length inputString
 def generateKey(inputString):
-    lengthOfString = inputString
-    for i in range(len(lengthOfString)):
-        randomletters = random.choice(string.ascii_lowercase) 
-        key = ''.join(randomletters)
-    return key
+    characterList = []
+    for i in range(len(inputString)):
+        randomletters = random.choice(string.ascii_lowercase)
+        characterList.append(randomletters)
+    newString = condenseString(characterList)
+    return newString
 
-
+def condenseString(characterList):
+    newString = ""
+    for letter in characterList:
+        newString += letter
+    return newString
 
 
 if __name__ == "__main__":
@@ -43,3 +58,5 @@ if __name__ == "__main__":
     key = generateKey(inputString)
     encrypt = VinegereCypher(inputString, key)
     print(encrypt)
+    decrypt = decryption(encrypt,key)
+    print(decrypt)
